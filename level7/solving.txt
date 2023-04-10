@@ -1,0 +1,8 @@
+fgets(&c, 0x44, fopen("/home/user/level8/.pass", &data_80486e9));
+puts(&data_8048703);
+Essayer de changer data_8048703 a l addresse memoire c => 0x8049960
+
+Pistes:
+-On a abort avec le deuxieme argv (voir cmt exploit)
+- On a segfault dans gdb a chaque fois (normal car le message d erreur de fgets est plus long que la memoire alloué)
+- le strcopy se situe dans le heap => 0x804a010

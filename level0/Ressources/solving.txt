@@ -1,0 +1,4 @@
+I do a gdb on ./level0
+gdb => disas main 
+We have the assembly of main and we have a cmp  0x08048ed9 <+25>:	cmp    $0x1a7,%eax
+So $0x1a7= 423 so we try ./level0 423 and that's it

