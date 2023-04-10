@@ -42,7 +42,7 @@ malloc(8)                                        = 0x0804a028
 malloc(8)                                        = 0x0804a038
 strcpy(0x0804a018, "AAAAAAAAAAAAAAAAAAAAAAAAA")  = 0x0804a018
 strcpy(0x41414141, "BBBBBBBBBB" <unfinished ...>
-Vizu du ltrace on peut voir que le deuxième strcpy essaye de mettre la valeur "BBBBBBBBBB" dans “0x41414141” du coup essayons d émettre l adresse de m 0x080484f4 dans l adresse qui call put 0x8048400
+Vizu du ltrace on peut voir que le deuxième strcpy essaye de mettre la valeur "BBBBBBBBBB" dans “0x41414141” du coup essayons de mettre l adresse de m 0x080484f4 dans l adresse qui call put 0x8048400
 Disas  0x8048400:
 0x08048400 <+0>:	jmp    *0x8049928
 Donc on prends 0x8049928 a la place de 0x8048400 parce que \x00

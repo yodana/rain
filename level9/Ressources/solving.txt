@@ -1,0 +1,5 @@
+memcpy(0x0804a00c, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"..., 200)
+        return **eax_1(eax_1, eax);
+Le return a la fin est le resultat de de la fonction operation +
+Trouver un moyen de rediriger le pointeur dans un shell code using memcpy ?
+On peut rediriger l adresse avec un overflow sur le memcpy qui va du coup overflow sur la prochaine variable. Du coup mettre l adresse d un shell code sur la prochaine variable.

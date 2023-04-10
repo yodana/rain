@@ -1,0 +1,19 @@
+On peut voir dans le code que après le free auth n est pas init a NULL. 
+On sait que free libere l espace mais auth pointe tjr a son adresse.
+ Et que le prochain malloc prendra son chunk memoire.
+  On peut voir dans le code que c est en tapant service qu on a le prochaine malloc 
+  donc si on tape service plusieurs fois on va finir par remplir la partie memoire *((_DWORD *)auth + 8) et elle ne sera donc plus a 0.
+(nil), (nil)
+auth 
+0x804a008, (nil)
+reset
+0x804a008, (nil)
+service
+0x804a008, 0x804a008
+service
+0x804a008, 0x804a018
+login
+Password:
+0x804a008, 0x804a018
+service
+0x804a008, 0x804a028
